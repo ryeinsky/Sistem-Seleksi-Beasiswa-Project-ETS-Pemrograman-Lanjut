@@ -7,7 +7,7 @@
 using namespace std;
 
 struct Mahasiswa {
-    char npm;
+    string npm;
     string nama;
     double nilai1, nilai2, nilai3;
     double rataRata;
@@ -25,7 +25,7 @@ double totalIteratif(double nilai[], int n) {
 }
 
 double totalRekursif(double nilai[], int n) {
-    if (n == 0) {
+    if (n <= 0) {
         return 0;
     }
 
@@ -34,6 +34,20 @@ double totalRekursif(double nilai[], int n) {
 
 double hitungRataRata(double nilai[], int n) {
     return totalIteratif(nilai, n) / n;
+}
+
+double inputNilai(const string& prompt) {
+    double nilai;
+    while (true) {
+        cout << prompt;
+        if (cin >> nilai && nilai >= 0 && nilai <= 100) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            return nilai;
+        }
+        cout << "Nilai tidak valid! Masukkan angka antara 0 - 100.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+    }
 }
 
 void bubbleSort(vector<Mahasiswa>& data) {
@@ -66,58 +80,44 @@ int main() {
     cout << "     SISTEM SELEKSI BEASISWA\n";
     cout << "========================================\n";
 
-    cout << "Masukkan jumlah mahasiswa: ";
-    if (!(cin >> jumlah) || jumlah <= 0) {
-        cout << "Jumlah mahasiswa harus lebih dari 0!\n";
-        return 1;
+    while (true) {
+        cout << "Masukkan jumlah mahasiswa: ";
+        if (cin >> jumlah && jumlah > 0) {
+            cin.ignore(numeric_limits<streamsize>::max(), '\n');
+            break;
+        }
+        cout << "Jumlah mahasiswa tidak valid! Masukkan angka lebih dari 0.\n";
+        cin.clear();
+        cin.ignore(numeric_limits<streamsize>::max(), '\n');
     }
-
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     // Input data mahasiswa
     for (int i = 0; i < jumlah; i++) {
         Mahasiswa m;
 
-        cout << "\nMahasiswa ke-" << i + 1 << endl; 
-    do {
-        cout << "NPM           : ";
-        if (!(cin >> m.npm) || m.npm <= 0) {
-            cout << "NPM tidak valid! Masukkan angka positif.\n";
-            cin.clear();
-            cin.ignore(numeric_limits<streamsize>::max(), '\n');
-            m.npm = 0;
-        } else {
-            break;
-        }
-    } while (true);
+        cout << "\nMahasiswa ke-" << i + 1 << endl;
 
-    cin.ignore(numeric_limits<streamsize>::max(), '\n');
-
-        cout << "Nama          : ";
-        getline(cin, m.nama);
-
-        cout << "Nilai 1       : ";
-        if (!(cin >> m.nilai1) ||
-            m.nilai1 < 0 || m.nilai1 > 100) {
-            cout << "Nilai harus antara 0-100!\n";
-            return 1;
+        while (true) {
+            cout << "NPM           : ";
+            getline(cin, m.npm);
+            if (!m.npm.empty()) {
+                break;
+            }
+            cout << "NPM tidak boleh kosong!\n";
         }
 
-        cout << "Nilai 2       : ";
-        if (!(cin >> m.nilai2) ||
-            m.nilai2 < 0 || m.nilai2 > 100) {
-            cout << "Nilai harus antara 0-100!\n";
-            return 1;
+        while (true) {
+            cout << "Nama          : ";
+            getline(cin, m.nama);
+            if (!m.nama.empty()) {
+                break;
+            }
+            cout << "Nama tidak boleh kosong!\n";
         }
 
-        cout << "Nilai 3       : ";
-        if (!(cin >> m.nilai3) ||
-            m.nilai3 < 0 || m.nilai3 > 100) {
-            cout << "Nilai harus antara 0-100!\n";
-            return 1;
-        }
-
-        cin.ignore(numeric_limits<streamsize>::max(), '\n');
+        m.nilai1 = inputNilai("Nilai 1       : ");
+        m.nilai2 = inputNilai("Nilai 2       : ");
+        m.nilai3 = inputNilai("Nilai 3       : ");
 
         // Menghitung rata-rata secara iteratif
         double nilai[] = {m.nilai1, m.nilai2, m.nilai3};
