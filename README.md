@@ -1,104 +1,97 @@
-# Sistem Seleksi Beasiswa (Project ETS Pemrograman Lanjut)
+# Sistem Seleksi Beasiswa (Tugas Individu UTS Pemrograman Lanjut)
 
-Program konsol berbasis C++ untuk menyeleksi penerima beasiswa berdasarkan nilai akademik mahasiswa. Program ini mengimplementasikan konsep struktur data dan algoritma dasar, termasuk perulangan iteratif, fungsi rekursif, pengurutan data (*sorting*), serta validasi input.
-
----
-
-## Fitur Utama
-
-- **Validasi Input yang Aman:**
-  - Penanganan kesalahan input pada jumlah mahasiswa, NPM, Nama, dan Nilai (0 - 100).
-  - Program tidak akan *crash* atau langsung keluar saat terjadi kesalahan pengetikan; pengguna akan diminta memasukkan kembali data yang valid.
-- **Perhitungan Total & Rata-Rata:**
-  - **Iteratif:** Menghitung total nilai menggunakan perulangan `for`.
-  - **Rekursif:** Menghitung total nilai menggunakan pemanggilan fungsi rekursif.
-- **Pengurutan Peringkat (*Sorting*):**
-  - Menggunakan algoritma **Bubble Sort** untuk mengurutkan mahasiswa secara *descending* berdasarkan nilai rata-rata tertinggi.
-- **Seleksi Kelolosan:**
-  - Mahasiswa dinyatakan **Lolos** jika memiliki rata-rata nilai $\ge 80$, dan **Tidak Lolos** jika $< 80$.
+Aplikasi konsol berbasis C++ untuk menyeleksi penerima beasiswa berdasarkan nilai akademik mahasiswa, dilengkapi perbandingan fungsi iteratif vs rekursif, pengujian 3 algoritma pengurutan (*sorting*) pada 100.000 data, serta penyimpanan data ke format **CSV**.
 
 ---
 
-## Konsep Pemrograman yang Diterapkan
+## 📁 Struktur File Proyek
 
-1. **Struct (`struct Mahasiswa`):** Pengelompokan data majemuk mahasiswa (NPM, Nama, Nilai 1-3, Rata-rata, Status).
-2. **Standard Template Library (STL Vector):** Menyimpan daftar objek mahasiswa secara dinamis.
-3. **Fungsi Rekursif vs Iteratif:** Demonstrasi perbandingan perhitungan nilai secara rekursif (`totalRekursif`) dan iteratif (`totalIteratif`).
-4. **Algoritma Bubble Sort:** Mengurutkan elemen dalam `std::vector<Mahasiswa>`.
-5. **Input Stream Handling:** Menggunakan `cin.clear()`, `cin.ignore()`, dan `std::numeric_limits` untuk mencegah *infinite loop* atau *buffer mismatch*.
-
----
-
-## Persyaratan Sistem
-
-- Kompiler C++ yang mendukung standar C++11 atau lebih baru (misal: GCC / MinGW `g++`, Clang, atau MSVC).
+1. **`SistemSeleksiBeasiswaUTS.cpp`** *(File Utama UTS)*:
+   - Program lengkap yang memenuhi seluruh 4 kriteria penugasan UTS.
+   - Dilengkapi penyimpanan data otomatis ke `data_mahasiswa.csv`.
+2. **`SistemSeleksiBeasiswa.cpp`**:
+   - Versi dasar program seleksi beasiswa.
+3. **`data_mahasiswa.csv`**:
+   - File data mahasiswa hasil ekspor sistem (dapat dibuka di Microsoft Excel atau Notepad).
 
 ---
 
-## Cara Kompilasi dan Menjalankan
+## 📌 Pemenuhan 4 Kriteria Tugas UTS
 
-### Menggunakan Terminal / Command Prompt
+### 1. Fungsi Memanggil Prosedur & Prosedur Memanggil Fungsi
+- **Prosedur memanggil Fungsi:**
+  Prosedur `void cetakBarisMahasiswa(...)` memanggil fungsi pengembali nilai `string seleksiBeasiswa(...)`.
+- **Fungsi memanggil Prosedur:**
+  Fungsi `bool tambahMahasiswa(...)` memanggil prosedur `void cetakPesanLog(...)`.
 
-1. **Buka terminal** di folder direktori project.
-2. **Kompilasi kode program:**
+### 2. Permasalahan Diselesaikan dengan Iterasi dan Rekursif
+Perhitungan akumulasi total nilai mahasiswa diselesaikan dengan 2 pendekatan:
+- **Fungsi Iteratif (`totalIteratif`):** Menggunakan perulangan `for` biasa.
+- **Fungsi Rekursif (`totalRekursif`):** Memanggil dirinya sendiri hingga mencapai kondisi dasar (*base case* `n <= 0`).
+
+### 3. Analisa Perbandingan Fungsi Iterasi dan Rekursif
+| Aspek | Fungsi Iteratif | Fungsi Rekursif |
+|---|---|---|
+| **Kompleksitas Waktu** | $O(n)$ | $O(n)$ |
+| **Kompleksitas Ruang (Memori)** | $O(1)$ (Hemat, variabel biasa) | $O(n)$ (Memerlukan memori *Call Stack*) |
+| **Kecepatan & Efisiensi** | Lebih cepat di C++ | Terdapat *overhead* pemanggilan fungsi |
+| **Resiko** | Aman | Berisiko *Stack Overflow* jika $n$ sangat besar |
+
+### 4. Uji 3 Algoritma Sorting pada $\ge 100.000$ Data & Analisa
+Program menguji pengurutan data nilai acak (0–100) menggunakan generator `rand()` sebanyak 100.000 data dengan 3 algoritma:
+
+1. **Quick Sort ($O(n \log n)$):**
+   - Sangat cepat, membagi array menjadi bagian kecil (*Divide and Conquer*).
+   - Waktu eksekusi pada 100.000 data: **~0.01 detik**.
+2. **Selection Sort ($O(n^2)$):**
+   - Mencari nilai ekstrem secara bertahap.
+   - Waktu eksekusi pada 100.000 data: memakan waktu beberapa detik karena memerlukan 10 miliar komparasi.
+3. **Bubble Sort ($O(n^2)$):**
+   - Melakukan pertukaran elemen yang berdekatan secara berulang.
+   - Waktu eksekusi pada 100.000 data: memakan waktu puluhan detik ($O(n^2)$).
+
+---
+
+## 💾 Fitur Penyimpanan CSV (`data_mahasiswa.csv`)
+
+Program memiliki menu untuk:
+1. Menyimpan data mahasiswa (NPM, Nama, Nilai 1-3, Rata-rata, Status) langsung ke format CSV.
+2. Membaca dan menampilkan kembali isi file CSV di layar konsol.
+
+---
+
+## 🚀 Cara Kompilasi dan Menjalankan
+
+### Menggunakan Terminal (GCC / MinGW g++)
+
+1. **Kompilasi program utama:**
    ```bash
-   g++ -o SistemSeleksiBeasiswa SistemSeleksiBeasiswa.cpp
+   g++ -O2 -o SistemSeleksiBeasiswaUTS SistemSeleksiBeasiswaUTS.cpp
    ```
-3. **Jalankan program:**
-   - Di Windows (CMD / PowerShell):
+2. **Jalankan aplikasi:**
+   - Di Windows:
      ```bash
-     .\SistemSeleksiBeasiswa.exe
+     .\SistemSeleksiBeasiswaUTS.exe
      ```
    - Di Linux / macOS:
      ```bash
-     ./SistemSeleksiBeasiswa
+     ./SistemSeleksiBeasiswaUTS
      ```
 
 ---
 
-## Contoh Alur Penggunaan
+## 🎬 Panduan Singkat Rekaman Video Presentasi (3–5 Menit)
 
-```text
-========================================
-     SISTEM SELEKSI BEASISWA
-========================================
-Masukkan jumlah mahasiswa: 2
-
-Mahasiswa ke-1
-NPM           : 23081010123
-Nama          : Budi Santoso
-Nilai 1       : 85
-Nilai 2       : 90
-Nilai 3       : 80
-
-Mahasiswa ke-2
-NPM           : 23081010124
-Nama          : Siti Aminah
-Nilai 1       : 75
-Nilai 2       : 70
-Nilai 3       : 80
-
-========================================
-          HASIL SELEKSI BEASISWA
-========================================
-
-Peringkat     : 1
-NPM           : 23081010123
-Nama          : Budi Santoso
-Total (Iteratif) : 255.00
-Total (Rekursif) : 255.00
-Rata-rata     : 85.00
-Status        : Lolos
-----------------------------------------
-
-Peringkat     : 2
-NPM           : 23081010124
-Nama          : Siti Aminah
-Total (Iteratif) : 225.00
-Total (Rekursif) : 225.00
-Rata-rata     : 75.00
-Status        : Tidak Lolos
-----------------------------------------
-
-Keterangan: Mahasiswa dinyatakan lolos jika rata-rata nilai >= 80.
-```
+1. **Pembukaan (30 detik):**
+   - Sebutkan Nama, NPM, dan judul tugas: *"Sistem Seleksi Beasiswa"*.
+2. **Demo Menu 1 & 2 (1.5 menit):**
+   - Input 2 data mahasiswa contoh.
+   - Jelaskan **Syarat 1** (prosedur `cetakBarisMahasiswa` memanggil fungsi `seleksiBeasiswa`).
+   - Tunjukkan hasil peringkat dan periksa file `data_mahasiswa.csv` yang berhasil terbentuk.
+3. **Demo Menu 4 - Analisa Iterasi vs Rekursi (1 menit):**
+   - Tampilkan hasil perhitungan iteratif vs rekursif.
+   - Jelaskan **Syarat 3**: Keduanya $O(n)$, namun iterasi lebih hemat memori stack.
+4. **Demo Menu 5 - Sorting 100.000 Data (1.5 menit):**
+   - Jalankan benchmark sorting 100.000 data.
+   - Jelaskan **Syarat 4**: Tunjukkan Quick Sort selesai dalam 0.01 detik ($O(n \log n)$) dibandingkan algoritma $O(n^2)$.
+5. **Penutup:** Ucapkan salam penutup.
