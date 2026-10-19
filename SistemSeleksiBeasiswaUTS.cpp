@@ -333,6 +333,31 @@ void ujiDanAnalisaIterasiRekursif() {
     cout << "============================================================\n";
 }
 
+// Helper validasi input NPM (harus angka, tidak boleh ada huruf/spasi)
+string inputNPM(string prompt) {
+    string npm;
+    while (true) {
+        cout << prompt;
+        getline(cin, npm);
+        if (npm.empty()) {
+            cout << "NPM tidak boleh kosong!\n";
+            continue;
+        }
+        bool semuaAngka = true;
+        for (char c : npm) {
+            if (!isdigit(c)) {
+                semuaAngka = false;
+                break;
+            }
+        }
+        if (!semuaAngka) {
+            cout << "NPM tidak valid! NPM hanya boleh berisi angka (digit 0-9).\n";
+            continue;
+        }
+        return npm;
+    }
+}
+
 // Helper input nilai aman
 double inputNilai(string prompt) {
     double nilai;
@@ -395,12 +420,7 @@ int main() {
                     Mahasiswa m;
                     cout << "\n--- Input Mahasiswa ke-" << i + 1 << " ---\n";
 
-                    while (true) {
-                        cout << "NPM           : ";
-                        getline(cin, m.npm);
-                        if (!m.npm.empty()) break;
-                        cout << "NPM tidak boleh kosong!\n";
-                    }
+                    m.npm = inputNPM("NPM           : ");
 
                     while (true) {
                         cout << "Nama          : ";

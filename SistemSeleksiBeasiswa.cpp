@@ -50,6 +50,30 @@ double inputNilai(const string& prompt) {
     }
 }
 
+string inputNPM(const string& prompt) {
+    string npm;
+    while (true) {
+        cout << prompt;
+        getline(cin, npm);
+        if (npm.empty()) {
+            cout << "NPM tidak boleh kosong!\n";
+            continue;
+        }
+        bool semuaAngka = true;
+        for (char c : npm) {
+            if (!isdigit(c)) {
+                semuaAngka = false;
+                break;
+            }
+        }
+        if (!semuaAngka) {
+            cout << "NPM tidak valid! NPM hanya boleh berisi angka (digit 0-9).\n";
+            continue;
+        }
+        return npm;
+    }
+}
+
 void bubbleSort(vector<Mahasiswa>& data) {
     int n = data.size();
 
@@ -97,14 +121,7 @@ int main() {
 
         cout << "\nMahasiswa ke-" << i + 1 << endl;
 
-        while (true) {
-            cout << "NPM           : ";
-            getline(cin, m.npm);
-            if (!m.npm.empty()) {
-                break;
-            }
-            cout << "NPM tidak boleh kosong!\n";
-        }
+        m.npm = inputNPM("NPM           : ");
 
         while (true) {
             cout << "Nama          : ";
