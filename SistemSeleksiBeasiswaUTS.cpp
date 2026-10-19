@@ -6,7 +6,7 @@
 #include <ctime>
 #include <cstdlib>
 #include <limits>
-
+#include <cctype>
 using namespace std;
 
 // =========================================================================
@@ -398,8 +398,26 @@ int main() {
                     while (true) {
                         cout << "NPM           : ";
                         getline(cin, m.npm);
-                        if (!m.npm.empty()) break;
-                        cout << "NPM tidak boleh kosong!\n";
+
+                        if (m.npm.empty()) {
+                            cout << "NPM tidak boleh kosong!\n";
+                            continue;
+                        }
+
+                        bool valid = true;
+
+                        for (char c : m.npm) {
+                            if (!isdigit(static_cast<unsigned char>(c))) {
+                                valid = false;
+                                break;
+                            }
+                        }
+
+                        if (valid) {
+                            break;
+                        }
+
+                        cout << "NPM harus berupa angka saja! Silakan input ulang.\n";
                     }
 
                     while (true) {
